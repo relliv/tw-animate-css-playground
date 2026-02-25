@@ -2,6 +2,8 @@
 
 Interactive playground for [tw-animate-css](https://github.com/Wombosvideo/tw-animate-css) — a pure CSS animation library for Tailwind CSS v4.
 
+![Preview](preview.png)
+
 ## Features
 
 - **Animation Builder** — combine multiple enter/exit effects (fade, zoom, spin, blur, slide) and preview them live
