@@ -1,0 +1,266 @@
+# tw-animate-css
+
+> Pure CSS animation utility classes for Tailwind CSS v4. No JavaScript runtime needed.
+> Package: tw-animate-css (https://github.com/Wombosvideo/tw-animate-css)
+
+## Installation
+
+```bash
+pnpm add tw-animate-css
+```
+
+```css
+/* In your main CSS file */
+@import "tailwindcss";
+@import "tw-animate-css";
+```
+
+## How Animations Work
+
+Animations require a **base class** plus one or more **effect classes**. Multiple effects can be composed together on a single element.
+
+### Base Classes (required)
+
+- `animate-in` — triggers enter animation
+- `animate-out` — triggers exit animation
+
+### Enter Effect Classes (use with `animate-in`)
+
+- `fade-in` — fade from transparent to opaque
+- `zoom-in` — scale up from smaller size
+- `spin-in` — rotate into view
+- `blur-in` — unblur into focus
+- `slide-in-from-top` — slide down from above
+- `slide-in-from-bottom` — slide up from below
+- `slide-in-from-left` — slide in from left
+- `slide-in-from-right` — slide in from right
+
+### Exit Effect Classes (use with `animate-out`)
+
+- `fade-out` — fade from opaque to transparent
+- `zoom-out` — scale down to smaller size
+- `spin-out` — rotate out of view
+- `blur-out` — blur out of focus
+- `slide-out-to-top` — slide up and out
+- `slide-out-to-bottom` — slide down and out
+- `slide-out-to-left` — slide out to left
+- `slide-out-to-right` — slide out to right
+
+### Ready-to-Use Animations (no base class needed)
+
+These are standalone classes with built-in keyframes:
+
+- `animate-accordion-down` — accordion expand downward
+- `animate-accordion-up` — accordion collapse upward
+- `animate-collapsible-down` — collapsible expand downward
+- `animate-collapsible-up` — collapsible collapse upward
+- `animate-caret-blink` — blinking caret/cursor effect
+
+## Duration Modifiers
+
+Control animation speed with Tailwind duration utilities:
+
+- `duration-150` — 150ms
+- `duration-300` — 300ms
+- `duration-500` — 500ms (recommended default)
+- `duration-700` — 700ms
+- `duration-1000` — 1000ms
+
+Any Tailwind `duration-*` class works (e.g., `duration-200`, `duration-[400ms]`).
+
+## Easing Modifiers
+
+Control animation curve with Tailwind ease utilities:
+
+- `ease-linear` — constant speed
+- `ease-in` — slow start
+- `ease-out` — slow end (recommended default)
+- `ease-in-out` — slow start and end
+
+## Composing Animations
+
+Multiple effect classes can be combined with a single base class. Effects are additive — they all play simultaneously.
+
+### Pattern
+
+```
+<base-class> <effect-1> [effect-2] [effect-N] [duration] [easing]
+```
+
+### Enter Combo Examples
+
+```html
+<!-- Fade + Zoom In -->
+<div class="animate-in fade-in zoom-in duration-500 ease-out">
+
+<!-- Fade + Slide Up -->
+<div class="animate-in fade-in slide-in-from-bottom duration-500 ease-out">
+
+<!-- Fade + Spin + Zoom (triple combo) -->
+<div class="animate-in fade-in spin-in zoom-in duration-500 ease-out">
+
+<!-- Blur + Slide Left -->
+<div class="animate-in blur-in slide-in-from-left duration-500 ease-out">
+
+<!-- All four enter effects combined -->
+<div class="animate-in fade-in zoom-in spin-in blur-in duration-700 ease-in-out">
+
+<!-- Fade + Slide from corner (two slides) -->
+<div class="animate-in fade-in slide-in-from-top slide-in-from-left duration-300 ease-out">
+```
+
+### Exit Combo Examples
+
+```html
+<!-- Fade + Zoom Out -->
+<div class="animate-out fade-out zoom-out duration-500 ease-out">
+
+<!-- Fade + Slide Up Out -->
+<div class="animate-out fade-out slide-out-to-top duration-500 ease-out">
+
+<!-- Spin + Fade Out -->
+<div class="animate-out fade-out spin-out duration-500 ease-out">
+
+<!-- Blur + Slide Right Out -->
+<div class="animate-out blur-out slide-out-to-right duration-300 ease-in">
+```
+
+## All Valid Combinations
+
+### Single Enter Effects (8)
+
+```
+animate-in fade-in
+animate-in zoom-in
+animate-in spin-in
+animate-in blur-in
+animate-in slide-in-from-top
+animate-in slide-in-from-bottom
+animate-in slide-in-from-left
+animate-in slide-in-from-right
+```
+
+### Single Exit Effects (8)
+
+```
+animate-out fade-out
+animate-out zoom-out
+animate-out spin-out
+animate-out blur-out
+animate-out slide-out-to-top
+animate-out slide-out-to-bottom
+animate-out slide-out-to-left
+animate-out slide-out-to-right
+```
+
+### Common Two-Effect Enter Combos
+
+```
+animate-in fade-in zoom-in
+animate-in fade-in spin-in
+animate-in fade-in blur-in
+animate-in fade-in slide-in-from-top
+animate-in fade-in slide-in-from-bottom
+animate-in fade-in slide-in-from-left
+animate-in fade-in slide-in-from-right
+animate-in zoom-in spin-in
+animate-in zoom-in blur-in
+animate-in zoom-in slide-in-from-top
+animate-in zoom-in slide-in-from-bottom
+animate-in zoom-in slide-in-from-left
+animate-in zoom-in slide-in-from-right
+animate-in spin-in blur-in
+animate-in spin-in slide-in-from-top
+animate-in spin-in slide-in-from-bottom
+animate-in spin-in slide-in-from-left
+animate-in spin-in slide-in-from-right
+animate-in blur-in slide-in-from-top
+animate-in blur-in slide-in-from-bottom
+animate-in blur-in slide-in-from-left
+animate-in blur-in slide-in-from-right
+animate-in slide-in-from-top slide-in-from-left
+animate-in slide-in-from-top slide-in-from-right
+animate-in slide-in-from-bottom slide-in-from-left
+animate-in slide-in-from-bottom slide-in-from-right
+```
+
+### Common Two-Effect Exit Combos
+
+```
+animate-out fade-out zoom-out
+animate-out fade-out spin-out
+animate-out fade-out blur-out
+animate-out fade-out slide-out-to-top
+animate-out fade-out slide-out-to-bottom
+animate-out fade-out slide-out-to-left
+animate-out fade-out slide-out-to-right
+animate-out zoom-out spin-out
+animate-out zoom-out blur-out
+animate-out zoom-out slide-out-to-top
+animate-out zoom-out slide-out-to-bottom
+animate-out zoom-out slide-out-to-left
+animate-out zoom-out slide-out-to-right
+animate-out spin-out blur-out
+animate-out spin-out slide-out-to-top
+animate-out spin-out slide-out-to-bottom
+animate-out spin-out slide-out-to-left
+animate-out spin-out slide-out-to-right
+animate-out blur-out slide-out-to-top
+animate-out blur-out slide-out-to-bottom
+animate-out blur-out slide-out-to-left
+animate-out blur-out slide-out-to-right
+animate-out slide-out-to-top slide-out-to-left
+animate-out slide-out-to-top slide-out-to-right
+animate-out slide-out-to-bottom slide-out-to-left
+animate-out slide-out-to-bottom slide-out-to-right
+```
+
+### Three-Effect Enter Combos (popular picks)
+
+```
+animate-in fade-in zoom-in spin-in
+animate-in fade-in zoom-in blur-in
+animate-in fade-in zoom-in slide-in-from-bottom
+animate-in fade-in spin-in slide-in-from-left
+animate-in fade-in blur-in slide-in-from-right
+animate-in zoom-in spin-in blur-in
+animate-in fade-in slide-in-from-bottom slide-in-from-left
+animate-in fade-in slide-in-from-top slide-in-from-right
+```
+
+### Three-Effect Exit Combos (popular picks)
+
+```
+animate-out fade-out zoom-out spin-out
+animate-out fade-out zoom-out blur-out
+animate-out fade-out zoom-out slide-out-to-top
+animate-out fade-out spin-out slide-out-to-right
+animate-out fade-out blur-out slide-out-to-left
+animate-out zoom-out spin-out blur-out
+animate-out fade-out slide-out-to-top slide-out-to-left
+animate-out fade-out slide-out-to-bottom slide-out-to-right
+```
+
+## Replay Pattern (JavaScript)
+
+To replay an animation programmatically, remove the classes, force a reflow, then re-add them:
+
+```ts
+function replay(el: HTMLElement, classes: string): void {
+  const classList = classes.split(" ");
+  classList.forEach((c) => el.classList.remove(c));
+  void el.offsetWidth; // force reflow
+  classList.forEach((c) => el.classList.add(c));
+}
+
+// Usage
+replay(element, "animate-in fade-in zoom-in duration-500 ease-out");
+```
+
+## Rules
+
+- Always include a base class (`animate-in` or `animate-out`) when using effect classes.
+- Do NOT mix enter effects with `animate-out` or exit effects with `animate-in`.
+- Multiple effects of the same type compose additively (e.g., two slide directions create diagonal movement).
+- Ready-to-use animations (`animate-accordion-*`, `animate-collapsible-*`, `animate-caret-blink`) are standalone — no base class needed.
+- Duration and easing modifiers are optional; browser defaults apply without them.
