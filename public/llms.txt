@@ -1,0 +1,49 @@
+# tw-animate-css Playground
+
+> Interactive playground for tw-animate-css — a pure CSS animation library for Tailwind CSS v4.
+
+## Project Overview
+
+This is a Vite + Tailwind CSS v4 vanilla JS app that demos the [tw-animate-css](https://github.com/Wombosvideo/tw-animate-css) package. It provides an interactive UI to preview, combine, and experiment with CSS animations.
+
+## Tech Stack
+
+- Vite 7 (vanilla JS template)
+- Tailwind CSS v4 (via @tailwindcss/vite plugin)
+- tw-animate-css (pure CSS animation utilities)
+- pnpm package manager
+
+## Project Structure
+
+- `index.html` — entry point
+- `src/main.js` — app logic: animation builder, presets, card grid, replay controls
+- `src/style.css` — Tailwind + tw-animate-css imports
+- `vite.config.js` — Vite config with Tailwind plugin and dynamic base URL
+- `.github/workflows/deploy.yml` — GitHub Pages deployment via GitHub Actions
+
+## Features
+
+- **Animation Builder**: toggle enter/exit direction, select multiple effects (fade, zoom, spin, blur, slide), preview combined result, see generated class string
+- **Combo Presets**: common multi-effect combinations
+- **All Animations**: individual animation cards with hover-to-replay
+- **Controls**: duration (150–1000ms), easing (linear, in, out, in-out)
+
+## Available Animation Effects
+
+### Enter (use with `animate-in`)
+fade-in, zoom-in, spin-in, blur-in, slide-in-from-top, slide-in-from-bottom, slide-in-from-left, slide-in-from-right
+
+### Exit (use with `animate-out`)
+fade-out, zoom-out, spin-out, blur-out, slide-out-to-top, slide-out-to-bottom, slide-out-to-left, slide-out-to-right
+
+### Ready-to-Use
+animate-accordion-down, animate-accordion-up, animate-collapsible-down, animate-collapsible-up, animate-caret-blink
+
+### Modifiers
+duration-{150,300,500,700,1000}, ease-{linear,in,out,in-out}
+
+## Commands
+
+- `pnpm dev` — start dev server
+- `pnpm build` — production build to `dist/`
+- `pnpm preview` — preview production build

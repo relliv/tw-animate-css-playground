@@ -1,32 +1,81 @@
 import "./style.css";
 
-const enterEffects = ["fade-in", "zoom-in", "spin-in", "blur-in", "slide-in-from-top", "slide-in-from-bottom", "slide-in-from-left", "slide-in-from-right"];
-const exitEffects = ["fade-out", "zoom-out", "spin-out", "blur-out", "slide-out-to-top", "slide-out-to-bottom", "slide-out-to-left", "slide-out-to-right"];
-const readyToUse = ["animate-accordion-down", "animate-accordion-up", "animate-collapsible-down", "animate-collapsible-up", "animate-caret-blink"];
+type Direction = "in" | "out";
 
-const presets = [
+interface Preset {
+  label: string;
+  classes: string;
+}
+
+const enterEffects: string[] = [
+  "fade-in",
+  "zoom-in",
+  "spin-in",
+  "blur-in",
+  "slide-in-from-top",
+  "slide-in-from-bottom",
+  "slide-in-from-left",
+  "slide-in-from-right",
+];
+const exitEffects: string[] = [
+  "fade-out",
+  "zoom-out",
+  "spin-out",
+  "blur-out",
+  "slide-out-to-top",
+  "slide-out-to-bottom",
+  "slide-out-to-left",
+  "slide-out-to-right",
+];
+const readyToUse: string[] = [
+  "animate-accordion-down",
+  "animate-accordion-up",
+  "animate-collapsible-down",
+  "animate-collapsible-up",
+  "animate-caret-blink",
+];
+
+const presets: Preset[] = [
   { label: "Fade + Zoom In", classes: "animate-in fade-in zoom-in" },
-  { label: "Fade + Slide Up", classes: "animate-in fade-in slide-in-from-bottom" },
-  { label: "Fade + Spin + Zoom", classes: "animate-in fade-in spin-in zoom-in" },
-  { label: "Blur + Slide Left", classes: "animate-in blur-in slide-in-from-left" },
+  {
+    label: "Fade + Slide Up",
+    classes: "animate-in fade-in slide-in-from-bottom",
+  },
+  {
+    label: "Fade + Spin + Zoom",
+    classes: "animate-in fade-in spin-in zoom-in",
+  },
+  {
+    label: "Blur + Slide Left",
+    classes: "animate-in blur-in slide-in-from-left",
+  },
   { label: "Fade + Zoom Out", classes: "animate-out fade-out zoom-out" },
-  { label: "Fade + Slide Up Out", classes: "animate-out fade-out slide-out-to-top" },
+  {
+    label: "Fade + Slide Up Out",
+    classes: "animate-out fade-out slide-out-to-top",
+  },
   { label: "Spin + Fade Out", classes: "animate-out fade-out spin-out" },
 ];
 
-const durations = ["duration-150", "duration-300", "duration-500", "duration-700", "duration-1000"];
-const easings = ["ease-linear", "ease-in", "ease-out", "ease-in-out"];
+const durations: string[] = [
+  "duration-150",
+  "duration-300",
+  "duration-500",
+  "duration-700",
+  "duration-1000",
+];
+const easings: string[] = ["ease-linear", "ease-in", "ease-out", "ease-in-out"];
 
-let selectedEffects = new Set();
-let currentDirection = "in"; // "in" or "out"
+let selectedEffects = new Set<string>();
+let currentDirection: Direction = "in";
 
-function createApp() {
-  const app = document.getElementById("app");
+function createApp(): void {
+  const app = document.getElementById("app")!;
 
   app.innerHTML = `
     <header class="mb-12 text-center">
-      <h1 class="text-4xl font-bold tracking-tight text-white mb-2">tw-animate-css</h1>
-      <p class="text-zinc-400 text-lg">Interactive playground for Tailwind CSS animation utilities</p>
+      <h1 class="text-4xl font-bold tracking-tight text-white mb-2">tw-animate-css Playground</h1>
+      <p class="text-zinc-400 text-lg">Interactive playground for <a href="https://github.com/Wombosvideo/tw-animate-css" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors">tw-animate-css</a> — Tailwind CSS animation utilities</p>
     </header>
 
     <!-- Combo Builder -->
@@ -47,13 +96,27 @@ function createApp() {
         <div class="flex flex-col gap-1">
           <label class="text-xs font-medium text-zinc-400 uppercase tracking-wide">Duration</label>
           <select id="duration-select" class="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
-            ${durations.map((d) => `<option value="${d}" ${d === "duration-500" ? "selected" : ""}>${d.replace("duration-", "")}ms</option>`).join("")}
+            ${durations
+              .map(
+                (d) =>
+                  `<option value="${d}" ${
+                    d === "duration-500" ? "selected" : ""
+                  }>${d.replace("duration-", "")}ms</option>`
+              )
+              .join("")}
           </select>
         </div>
         <div class="flex flex-col gap-1">
           <label class="text-xs font-medium text-zinc-400 uppercase tracking-wide">Easing</label>
           <select id="easing-select" class="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
-            ${easings.map((e) => `<option value="${e}" ${e === "ease-out" ? "selected" : ""}>${e.replace("ease-", "")}</option>`).join("")}
+            ${easings
+              .map(
+                (e) =>
+                  `<option value="${e}" ${
+                    e === "ease-out" ? "selected" : ""
+                  }>${e.replace("ease-", "")}</option>`
+              )
+              .join("")}
           </select>
         </div>
         <button id="replay-builder" class="bg-amber-600 hover:bg-amber-500 text-white rounded-lg px-4 py-2 text-sm font-medium transition-colors cursor-pointer">
@@ -100,28 +163,52 @@ function createApp() {
   renderPresets();
   renderAllAnimations();
 
-  document.getElementById("dir-in").addEventListener("click", () => setDirection("in"));
-  document.getElementById("dir-out").addEventListener("click", () => setDirection("out"));
-  document.getElementById("replay-builder").addEventListener("click", replayBuilder);
-  document.getElementById("clear-builder").addEventListener("click", clearBuilder);
-  document.getElementById("replay-all").addEventListener("click", replayAll);
-  document.getElementById("duration-select").addEventListener("change", () => { replayBuilder(); replayAll(); });
-  document.getElementById("easing-select").addEventListener("change", () => { replayBuilder(); replayAll(); });
+  document
+    .getElementById("dir-in")!
+    .addEventListener("click", () => setDirection("in"));
+  document
+    .getElementById("dir-out")!
+    .addEventListener("click", () => setDirection("out"));
+  document
+    .getElementById("replay-builder")!
+    .addEventListener("click", replayBuilder);
+  document
+    .getElementById("clear-builder")!
+    .addEventListener("click", clearBuilder);
+  document.getElementById("replay-all")!.addEventListener("click", replayAll);
+  document.getElementById("duration-select")!.addEventListener("change", () => {
+    replayBuilder();
+    replayAll();
+  });
+  document.getElementById("easing-select")!.addEventListener("change", () => {
+    replayBuilder();
+    replayAll();
+  });
 }
 
-function setDirection(dir) {
+function setDirection(dir: Direction): void {
   currentDirection = dir;
   selectedEffects.clear();
 
-  document.getElementById("dir-in").className = `dir-btn px-4 py-1.5 rounded-lg text-sm font-medium cursor-pointer transition-colors ${dir === "in" ? "bg-amber-600 text-white" : "bg-zinc-800 text-zinc-400 hover:text-zinc-200"}`;
-  document.getElementById("dir-out").className = `dir-btn px-4 py-1.5 rounded-lg text-sm font-medium cursor-pointer transition-colors ${dir === "out" ? "bg-amber-600 text-white" : "bg-zinc-800 text-zinc-400 hover:text-zinc-200"}`;
+  document.getElementById("dir-in")!.className =
+    `dir-btn px-4 py-1.5 rounded-lg text-sm font-medium cursor-pointer transition-colors ${
+      dir === "in"
+        ? "bg-amber-600 text-white"
+        : "bg-zinc-800 text-zinc-400 hover:text-zinc-200"
+    }`;
+  document.getElementById("dir-out")!.className =
+    `dir-btn px-4 py-1.5 rounded-lg text-sm font-medium cursor-pointer transition-colors ${
+      dir === "out"
+        ? "bg-amber-600 text-white"
+        : "bg-zinc-800 text-zinc-400 hover:text-zinc-200"
+    }`;
 
   renderEffectToggles();
   updateBuilderOutput();
 }
 
-function renderEffectToggles() {
-  const container = document.getElementById("effect-toggles");
+function renderEffectToggles(): void {
+  const container = document.getElementById("effect-toggles")!;
   const effects = currentDirection === "in" ? enterEffects : exitEffects;
 
   container.innerHTML = effects
@@ -132,16 +219,20 @@ function renderEffectToggles() {
         .replace("slide-out-to-", "slide ")
         .replace("-in", "")
         .replace("-out", "");
-      return `<button data-effect="${effect}" class="effect-toggle px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${active ? "bg-amber-600 text-white" : "bg-zinc-800 text-zinc-400 hover:text-zinc-200 border border-zinc-700"}">${label}</button>`;
+      return `<button data-effect="${effect}" class="effect-toggle px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+        active
+          ? "bg-amber-600 text-white"
+          : "bg-zinc-800 text-zinc-400 hover:text-zinc-200 border border-zinc-700"
+      }">${label}</button>`;
     })
     .join("");
 
-  container.querySelectorAll(".effect-toggle").forEach((btn) => {
-    btn.addEventListener("click", () => toggleEffect(btn.dataset.effect));
+  container.querySelectorAll<HTMLButtonElement>(".effect-toggle").forEach((btn) => {
+    btn.addEventListener("click", () => toggleEffect(btn.dataset.effect!));
   });
 }
 
-function toggleEffect(effect) {
+function toggleEffect(effect: string): void {
   if (selectedEffects.has(effect)) {
     selectedEffects.delete(effect);
   } else {
@@ -152,14 +243,14 @@ function toggleEffect(effect) {
   replayBuilder();
 }
 
-function getBuilderClasses() {
+function getBuilderClasses(): string {
   if (selectedEffects.size === 0) return "";
   const base = currentDirection === "in" ? "animate-in" : "animate-out";
   return [base, ...selectedEffects].join(" ");
 }
 
-function updateBuilderOutput() {
-  const output = document.getElementById("builder-output");
+function updateBuilderOutput(): void {
+  const output = document.getElementById("builder-output")!;
   const classes = getBuilderClasses();
   if (classes) {
     const modifiers = getModifiers();
@@ -169,38 +260,39 @@ function updateBuilderOutput() {
   }
 }
 
-function replayBuilder() {
-  const el = document.getElementById("builder-preview");
+function replayBuilder(): void {
+  const el = document.getElementById("builder-preview")!;
   const classes = getBuilderClasses();
   if (!classes) return;
 
   const allClasses = `${classes} ${getModifiers()}`;
-  // Remove everything except base styles
-  el.className = "w-16 h-16 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 shadow-lg shadow-amber-500/20";
+  el.className =
+    "w-16 h-16 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 shadow-lg shadow-amber-500/20";
   void el.offsetWidth;
   allClasses.split(" ").forEach((c) => el.classList.add(c));
 }
 
-function clearBuilder() {
+function clearBuilder(): void {
   selectedEffects.clear();
   renderEffectToggles();
   updateBuilderOutput();
-  const el = document.getElementById("builder-preview");
-  el.className = "w-16 h-16 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 shadow-lg shadow-amber-500/20";
+  const el = document.getElementById("builder-preview")!;
+  el.className =
+    "w-16 h-16 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 shadow-lg shadow-amber-500/20";
 }
 
-function renderPresets() {
-  const grid = document.getElementById("presets-grid");
+function renderPresets(): void {
+  const grid = document.getElementById("presets-grid")!;
   for (const preset of presets) {
     const card = createCard(preset.classes, preset.label);
     grid.appendChild(card);
   }
 }
 
-function renderAllAnimations() {
-  const grid = document.getElementById("all-grid");
+function renderAllAnimations(): void {
+  const grid = document.getElementById("all-grid")!;
 
-  const allSingle = [
+  const allSingle: string[] = [
     ...enterEffects.map((e) => `animate-in ${e}`),
     ...exitEffects.map((e) => `animate-out ${e}`),
     ...readyToUse,
@@ -212,9 +304,10 @@ function renderAllAnimations() {
   }
 }
 
-function createCard(animClasses, label) {
+function createCard(animClasses: string, label?: string): HTMLDivElement {
   const card = document.createElement("div");
-  card.className = "group relative bg-zinc-900 border border-zinc-800 rounded-xl p-4 hover:border-zinc-700 transition-colors";
+  card.className =
+    "group relative bg-zinc-900 border border-zinc-800 rounded-xl p-4 hover:border-zinc-700 transition-colors";
 
   const displayLabel = label || animClasses;
 
@@ -230,21 +323,23 @@ function createCard(animClasses, label) {
     </div>
   `;
 
-  card.querySelector(".replay-btn").addEventListener("click", () => {
-    replay(card.querySelector(".animation-target"));
+  card.querySelector<HTMLButtonElement>(".replay-btn")!.addEventListener("click", () => {
+    replay(card.querySelector<HTMLElement>(".animation-target")!);
   });
 
   return card;
 }
 
-function getModifiers() {
-  const duration = document.getElementById("duration-select")?.value || "duration-500";
-  const easing = document.getElementById("easing-select")?.value || "ease-out";
+function getModifiers(): string {
+  const duration =
+    (document.getElementById("duration-select") as HTMLSelectElement | null)?.value || "duration-500";
+  const easing =
+    (document.getElementById("easing-select") as HTMLSelectElement | null)?.value || "ease-out";
   return `${duration} ${easing}`;
 }
 
-function replay(el) {
-  const animClasses = el.dataset.anim;
+function replay(el: HTMLElement): void {
+  const animClasses = el.dataset.anim!;
   const allClasses = `${animClasses} ${getModifiers()}`;
 
   allClasses.split(" ").forEach((c) => el.classList.remove(c));
@@ -252,10 +347,14 @@ function replay(el) {
   allClasses.split(" ").forEach((c) => el.classList.add(c));
 }
 
-function replayAll() {
-  document.querySelectorAll("#all-grid .animation-target, #presets-grid .animation-target").forEach((el) => {
-    replay(el);
-  });
+function replayAll(): void {
+  document
+    .querySelectorAll<HTMLElement>(
+      "#all-grid .animation-target, #presets-grid .animation-target"
+    )
+    .forEach((el) => {
+      replay(el);
+    });
 }
 
 createApp();
