@@ -24,4 +24,4 @@ pnpm dev
 - [Vite](https://vite.dev)
 - [Tailwind CSS v4](https://tailwindcss.com)
 - [tw-animate-css](https://github.com/Wombosvideo/tw-animate-css)
-- Vanilla HTML + JS
+- Vanilla HTML + TS
