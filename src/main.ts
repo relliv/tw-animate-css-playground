@@ -177,10 +177,12 @@ function createApp(): void {
     .addEventListener("click", clearBuilder);
   document.getElementById("replay-all")!.addEventListener("click", replayAll);
   document.getElementById("duration-select")!.addEventListener("change", () => {
+    updateBuilderOutput();
     replayBuilder();
     replayAll();
   });
   document.getElementById("easing-select")!.addEventListener("change", () => {
+    updateBuilderOutput();
     replayBuilder();
     replayAll();
   });
