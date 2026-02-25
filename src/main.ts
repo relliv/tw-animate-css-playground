@@ -246,15 +246,18 @@ function toggleEffect(effect: string): void {
 function getBuilderClasses(): string {
   if (selectedEffects.size === 0) return "";
   const base = currentDirection === "in" ? "animate-in" : "animate-out";
-  return [base, ...selectedEffects].join(" ");
+  const duration =
+    (document.getElementById("duration-select") as HTMLSelectElement | null)?.value || "duration-500";
+  const easing =
+    (document.getElementById("easing-select") as HTMLSelectElement | null)?.value || "ease-out";
+  return [base, ...selectedEffects, duration, easing].join(" ");
 }
 
 function updateBuilderOutput(): void {
   const output = document.getElementById("builder-output")!;
   const classes = getBuilderClasses();
   if (classes) {
-    const modifiers = getModifiers();
-    output.innerHTML = `<span class="text-amber-400">${classes}</span> <span class="text-zinc-500">${modifiers}</span>`;
+    output.innerHTML = `<span class="text-amber-400">${classes}</span>`;
   } else {
     output.innerHTML = `<span class="text-zinc-600">select effects above</span>`;
   }
